@@ -63,22 +63,37 @@ public class Solution
 		List<char> leters = new List<char>();
 		List<List<char>> words = new List<List<char>>();
 		bool a = true;
-		for (int i = 0; i < c.Length; ++i)
+
+		//foreach (char c2 in c) 
+		//{
+
+		//}
+
+		if (c.Length() == 1)
 		{
-			//if (i == c.Length())
-			//{
-			//	return 1;
-			//}
-			leters.Add(c[i]);
-			for (int j = i + 1; j < c.Length; j++)
+			words.Add(c.ToList());
+		}
+		else
+		{
+			for (int i = 0; i < c.Length - 1; ++i)
 			{
-				if (c[i] != c[j])
+
+				leters.Add(c[i]);
+				for (int j = i + 1; j < leters.Count + i + 1; j++)
 				{
+					if (c.Length <= j)
+					{
+						words.Add(new List<char>(leters));
+						leters.Clear();
+						break;
+					}
 					for (int k = 0; k < leters.Length(); ++k)
 					{
 						if (leters[k] == c[j])
 						{
 							a = false;
+							words.Add(new List<char>(leters));
+							leters.Clear();
 							break;
 						}
 					}
@@ -88,22 +103,27 @@ public class Solution
 					}
 					a = true;
 				}
-				else
-				{
-					words.Add(new List<char>(leters));
-					leters.Clear();
-					break;
-				}
 			}
 		}
-		return leters.Length();
+		
+
+		int max = 0;
+		foreach(var chars in words) 
+		{
+			if (chars.Count > max)
+			{
+				max = chars.Count;
+			}
+		}
+
+		return max;
 	}
 }
 internal class Program
 {
 	private static void Main(string[] args)
 	{
-		Solution.LengthOfLongestSubstring("abcabcbb");
+		Solution.LengthOfLongestSubstring("qtyu9oe");
 
 	}
 }
