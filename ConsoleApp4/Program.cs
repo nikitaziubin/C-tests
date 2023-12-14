@@ -1,6 +1,4 @@
-﻿using LanguageExt;
-using static LanguageExt.Prelude;
-
+﻿using System;
 
 public class ListNode
 {
@@ -64,11 +62,6 @@ public class Solution
 		List<List<char>> words = new List<List<char>>();
 		bool a = true;
 
-		//foreach (char c2 in c) 
-		//{
-
-		//}
-
 		if (c.Length() == 1)
 		{
 			words.Add(c.ToList());
@@ -105,10 +98,10 @@ public class Solution
 				}
 			}
 		}
-		
+
 
 		int max = 0;
-		foreach(var chars in words) 
+		foreach (var chars in words)
 		{
 			if (chars.Count > max)
 			{
@@ -118,12 +111,44 @@ public class Solution
 
 		return max;
 	}
+	public static double FindMedianSortedArrays(int[] nums1, int[] nums2)
+	{
+		double[] result = new double[nums1.Length + nums2.Length];
+		int k = 0;
+		for (int i = 0; i < nums1.Length; ++i)
+		{
+			result[i] = nums1[i];
+			k = i;
+		}
+		if (nums1.Length != 0)
+		{
+			k++;
+		}
+		for (int j = 0; j < nums2.Length; ++j)
+		{
+			result[k] = nums2[j];
+			k++;	
+		}
+		Array.Sort(result);
+		if (result.Length % 2 == 0)
+		{
+			return (result[result.Length / 2] + result[result.Length / 2 - 1]) / 2.0;
+		}
+		else
+		{
+			return result[result.Length / 2];
+		}
+
+	}
 }
 internal class Program
 {
 	private static void Main(string[] args)
 	{
-		Solution.LengthOfLongestSubstring("qtyu9oe");
+		int[] a = new int[] { };
+		int[] b = new int[] { 2,3 };
+
+		Console.WriteLine(Solution.FindMedianSortedArrays(a, b));
 
 	}
 }
