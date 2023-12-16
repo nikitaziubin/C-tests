@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 public class ListNode
 {
@@ -127,7 +128,7 @@ public class Solution
 		for (int j = 0; j < nums2.Length; ++j)
 		{
 			result[k] = nums2[j];
-			k++;	
+			k++;
 		}
 		Array.Sort(result);
 		if (result.Length % 2 == 0)
@@ -140,15 +141,78 @@ public class Solution
 		}
 
 	}
+	public static bool IsValid(string s)
+	{
+
+		char[] chars = s.ToCharArray();
+		if (chars.Length % 2 != 0 || chars.Length <= 1 || chars[0] == '}' || chars[0] == ')' || chars[0] == ']' || chars[chars.Length - 1] == '(' || chars[chars.Length - 1] == '{' || chars[chars.Length - 1] == '[' || chars[chars.Length - 1] == '{')
+		{
+			return false;
+		}
+		for (int i = 0; i < chars.Length; i++)
+		{
+			if (chars[i] == '(')
+			{
+				if (chars[i + 1] == ')' || (chars[chars.Length - i - 1] == ')' && chars.Length / 2 > i))
+				{
+					continue;
+				}
+				else
+				{
+					return false;
+				}
+
+			}
+			else if (chars[i] == '[')
+			{
+				if (chars[i + 1] == ']' || (chars[chars.Length - i - 1] == ']' && chars.Length / 2 > i))
+				{
+					continue;
+				}
+				else
+				{
+					return false;
+				}
+
+			}
+			else if (chars[i] == '{')
+			{
+				if (chars[i + 1] == '}' || (chars[chars.Length - i - 1] == '}' && chars.Length / 2 > i))
+				{
+					continue;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if (i == chars.Length / 2 - 1)
+			{
+				if (chars[i] == '}' && chars[i + 1] == '}')
+				{
+					return false;
+				}
+				else if (chars[i] == ']' && chars[i + 1] == ']')
+				{
+					return false;
+				}
+				else if (chars[i] == ')' && chars[i + 1] == ')')
+				{
+					return false;
+				}
+			}
+			else
+			{
+				continue;
+			}
+		}
+		return true;
+	}
 }
 internal class Program
 {
 	private static void Main(string[] args)
 	{
-		int[] a = new int[] { };
-		int[] b = new int[] { 2,3 };
-
-		Console.WriteLine(Solution.FindMedianSortedArrays(a, b));
-
+		Console.WriteLine(Solution.IsValid("(([]){})")); 
 	}
 }
