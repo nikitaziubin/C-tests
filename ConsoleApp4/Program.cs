@@ -271,6 +271,43 @@ public class Solution
 
 		return finalList;
 	}
+	public static int Reverse(int x)
+	{
+        if (x == 0 || x <= Math.Pow(2, 31) * -1 )
+        {
+			return 0;
+        }
+		
+        List<int> list = new List<int>();
+		int num = x;
+		if (x < 0)
+		{
+			num = num * (-1);
+		}
+		while (num != 0) 
+		{
+			int a = num % 10;
+			list.Add(a);
+			num = num / 10;
+		}
+		string b = string.Join("", list);
+
+		if (Convert.ToDouble(b) < Math.Pow(2, 31) - 1)
+		{
+			if (x < 0)
+			{
+				return Convert.ToInt32(b) * -1;
+			}
+			else
+			{
+				return Convert.ToInt32(b);
+			}
+			
+		}
+		return 0;
+
+
+	}
 }
 internal class Program
 {
@@ -279,8 +316,6 @@ internal class Program
 		ListNode List1 = new ListNode(1, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(1)))))))))))))))))))))))))))))));
 		ListNode List2 = new ListNode(5, new ListNode(6, new ListNode(4)));
 
-		Solution.AddTwoNumbers(List1, List2);
-
-		Console.WriteLine(Solution.IsValid("[({])}"));
+		Console.WriteLine( Solution.Reverse(-2147483648));
 	}
 }
