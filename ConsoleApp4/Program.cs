@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 using System.Numerics;
 using System.Text;
+using System.Collections.Generic;
 
 public class ListNode
 {
@@ -150,7 +151,7 @@ public class Solution
 	{
 		int charsCount;
 		List<char> modifiedChars = s.ToList();
-		List<char> chars = new List<char> (modifiedChars);
+		List<char> chars = new List<char>(modifiedChars);
 		charsCount = modifiedChars.Count;
 		List<char> sortedChars = new List<char>();
 
@@ -169,7 +170,7 @@ public class Solution
 					if (p % 2 != 0)
 					{
 						sortedChars.Add(scobkaClose);
-						modifiedChars[j] = '*'; 
+						modifiedChars[j] = '*';
 						return;
 					}
 				}
@@ -273,18 +274,18 @@ public class Solution
 	}
 	public static int Reverse(int x)
 	{
-        if (x == 0 || x <= Math.Pow(2, 31) * -1 )
-        {
+		if (x == 0 || x <= Math.Pow(2, 31) * -1)
+		{
 			return 0;
-        }
-		
-        List<int> list = new List<int>();
+		}
+
+		List<int> list = new List<int>();
 		int num = x;
 		if (x < 0)
 		{
 			num = num * (-1);
 		}
-		while (num != 0) 
+		while (num != 0)
 		{
 			int a = num % 10;
 			list.Add(a);
@@ -302,20 +303,187 @@ public class Solution
 			{
 				return Convert.ToInt32(b);
 			}
-			
+
 		}
 		return 0;
 
 
+	}
+	public static int MaxArea(int[] height)
+	{
+		int[] modifaed = new int[height.Length];
+		height.CopyTo(modifaed, 0);
+
+		int maxArea = 0;
+		int X = 0;
+		int Y1 = 0;
+		int Y2 = 0;
+		int area;
+		if (height[0] == height[height.Length - 1])
+		{
+			modifaed[0] = 0;
+			int index = Array.IndexOf(modifaed, modifaed[modifaed.Length - 1]);
+			modifaed[0] = height[0];
+			maxArea = modifaed[0] * index;
+		}
+		for (int i = 0; i < height.Length; i++)
+		{
+			Y1 = modifaed.Max();
+			int index1 = Array.IndexOf(height, Y1);
+			modifaed[index1] = 0;
+
+			Y2 = modifaed.Max();
+			int index2 = Array.IndexOf(height, Y2);
+			if (Y1 > Y2)                        //{ 1, 8, 6, 2, 5, 4, 8, 3, 7 } // 1 2 1
+			{
+				area = Y2 * Math.Abs(index1 - index2);
+				modifaed[index2] = 0;
+				modifaed[index1] = Y1;
+				if (area > maxArea)
+				{
+					maxArea = area;
+				}
+			}
+			else
+			{
+				area = Y1 * Math.Abs(index2 - index1);
+				modifaed[index2] = 0;
+				modifaed[index1] = Y1;
+				if (area > maxArea)
+				{
+					maxArea = area;
+				}
+			}
+		}
+
+
+		//int maxArea = 0;
+		//int X = 1;
+		//for (int i = 0; i < height.Length; ++i)
+		//{
+		//	for (int j = i + 1; j < height.Length; ++j)
+		//	{
+		//		if (height[i] > height[j])                             //{ 1, 8, 6, 2, 5, 4, 8, 3, 7 }
+		//		{
+		//			int area = height[j] * X;
+		//			if (area > maxArea)
+		//			{
+		//				maxArea = area;
+		//			}
+		//		}
+		//		else 
+		//		{
+		//			int area = height[i] * X;
+		//			if (area > maxArea)
+		//			{
+		//				maxArea = area;
+		//			}
+		//		}
+		//		X++;
+		//	}
+		//	X = 1;
+		//}
+		return maxArea;
+	}
+	public static IList<IList<int>> ThreeSum(int[] nums)
+	{
+		IList<IList<int>> sortedNums = new List<IList<int>>();
+		for (int i = 0; i < nums.Length; ++i)
+		{
+			for (int j = i + 1; j < nums.Length; ++j)
+			{
+				for (int k = j + 1; k < nums.Length; ++k)
+				{
+					if (nums[i] + nums[j] + nums[k] == 0)
+					{
+						var ints = new List<int> { nums[i], nums[j], nums[k] };
+						ints.Sort();
+						var sortedInts = new List<int>(ints);
+						bool a = true;
+						foreach (var list in sortedNums)
+						{
+							var sortedList = new List<int>(list);
+							sortedList.Sort();
+
+							if (sortedList.SequenceEqual(sortedInts))
+							{
+								a = false;
+								break;
+							}
+						}
+						if (a)
+						{
+							sortedNums.Add(sortedInts);
+						}
+					}
+				}
+			}
+		}
+		return sortedNums;
+	}
+	public static ListNode MergeTwoLists(ListNode list1, ListNode list2)
+	{
+		List<int> ints1 = new List<int>();
+		List<int> ints2 = new List<int>();
+		void BuildArray(ListNode list, List<int> num)
+		{
+			while (list != null)
+			{
+				num.Add(list.val);
+				list = list.next;
+
+			}
+		}
+		BuildArray(list1, ints1);
+		BuildArray(list2, ints2);
+		ints1.AddRange(ints2);
+		ints1.Sort();
+		if (ints1.Count == 0)
+		{
+			return null; 
+		}
+		ListNode finalList = new ListNode(ints1[0]);
+		ListNode current = finalList;
+		for (int i = 1; i < ints1.Count; ++i)
+		{
+			current.next = new ListNode(ints1[i]);
+			current = current.next;
+		}
+
+		return finalList;
 	}
 }
 internal class Program
 {
 	private static void Main(string[] args)
 	{
-		ListNode List1 = new ListNode(1, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(1)))))))))))))))))))))))))))))));
-		ListNode List2 = new ListNode(5, new ListNode(6, new ListNode(4)));
+		//var a = 1.0f;
+		//var b = 1d;
+		//var m = 1m;
+		//int[,] ints1 = new int[3, 3];
 
-		Console.WriteLine( Solution.Reverse(-2147483648));
+		//object obj1 = new object();
+		//object obj2 = new object();
+		//var hashCode1 = obj1.GetHashCode();
+		//var hashCode2 = obj2.GetHashCode();
+
+		//var s = "hello";
+		//var s1 = s;
+
+		//bool d = true, c = false, h = true;
+		//if (d | c & h) 
+		//{
+
+		//}
+		//Console.WriteLine($"{a.GetType()}  {b.GetType()}  {m.GetType()}");
+		//int[] ints = { 1, 8, 6, 2, 5, 4, 8, 3, 7 };
+		//Console.WriteLine(Solution.MaxArea(ints));
+		//ListNode listNode1 = new ListNode(1, new ListNode(2, new ListNode(4)));
+		//ListNode listNode2 = new ListNode(1, new ListNode(3, new ListNode(4)));
+		ListNode listNode1 = new ListNode();
+		ListNode listNode2 = new ListNode();
+		Solution.MergeTwoLists(listNode1, listNode2);
+
+
 	}
 }
