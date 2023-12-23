@@ -5,6 +5,8 @@ using System.Globalization;
 using System.Numerics;
 using System.Text;
 using System.Collections.Generic;
+using LanguageExt.TypeClasses;
+using System.Linq;
 
 public class ListNode
 {
@@ -440,7 +442,7 @@ public class Solution
 		ints1.Sort();
 		if (ints1.Count == 0)
 		{
-			return null; 
+			return null;
 		}
 		ListNode finalList = new ListNode(ints1[0]);
 		ListNode current = finalList;
@@ -451,6 +453,186 @@ public class Solution
 		}
 
 		return finalList;
+	}
+	public static ListNode MergeKLists(ListNode[] lists)
+	{
+		List<int> listConvertedInts = new List<int>();
+
+		List<int> BuildArray(ListNode list)
+		{
+			List<int> ints = new List<int>();
+			while (list != null)
+			{
+				ints.Add(list.val);
+				list = list.next;
+
+			}
+			return ints;
+		}
+		foreach (ListNode list in lists)
+		{
+			listConvertedInts.AddRange(BuildArray(list));
+		}
+		listConvertedInts.Sort();
+		if (listConvertedInts.Count == 0)
+		{
+			return null;
+		}
+		ListNode finalList = new ListNode(listConvertedInts[0]);
+		ListNode current = finalList;
+
+		for (int i = 1; i < listConvertedInts.Count; ++i)
+		{
+			current.next = new ListNode(listConvertedInts[i]);
+			current = current.next;
+		}
+
+		return finalList;
+	}
+	public static int RemoveDuplicates(int[] nums)
+	{
+		List<int> expectedNums = new List<int>(nums);
+		//expectedNums.AddRange(nums);
+
+		for (int i = 0; i < expectedNums.Count; ++i)
+		{
+			int j = i + 1;
+			while (j < expectedNums.Count)
+			{
+				if (expectedNums[j] == expectedNums[i])
+				{
+					expectedNums.RemoveAt(j);
+					j = i + 1;
+				}
+				else
+				{
+					j++;
+				}
+			}
+		}
+		expectedNums.CopyTo(nums, 0);
+		return expectedNums.Count;
+	}
+	public static int RemoveElement(int[] nums, int val)
+	{
+		List<int> expectedNums = new List<int>(nums);
+		int j = 0;
+		while (j < expectedNums.Count)
+		{
+			if (expectedNums[j] == val)
+			{
+				expectedNums.RemoveAt(j);
+			}
+			else
+			{
+				j++;
+			}
+		}
+
+		expectedNums.CopyTo(nums, 0);
+		return expectedNums.Count;
+	}
+	public static int StrStr(string haystack, string needle)
+	{
+		int needleCount = needle.Length;
+		int haystackCount = haystack.Length;
+
+		for (int i = 0; i < haystackCount - needleCount + 1; ++i)
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			int k = i;
+			for (int j = 0; j < needleCount; ++j)
+			{
+				stringBuilder.Append(haystack[k++]);
+			}
+			if (needle == stringBuilder.ToString())
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	public static int Divide(int dividend, int divisor)
+	{
+		bool a;
+		if (dividend == -2147483648)
+		{
+			dividend = -2147483647;
+		}
+		if (divisor < 0 && dividend < 0)
+		{
+			dividend = -1 * dividend;
+			divisor = divisor * -1;
+			a = false;
+		}
+		else if (divisor < 0)
+		{
+			divisor = divisor * -1;
+			a = true;
+		}
+		else if (dividend < 0)
+		{
+			dividend = dividend * -1;
+			a = true;
+		}
+		else
+		{
+			a = false;
+		}
+
+		if (dividend < divisor)
+		{
+			return 0;
+		}
+		int i;
+		for (i = 0; i < dividend; ++i)
+		{
+			dividend = dividend - divisor;
+		}
+		if (a)
+		{
+			return i * -1;
+		}
+		return i;
+	}
+	public static int Search(int[] nums, int target)
+	{
+		for (int i = 0; i < nums.Length; ++i)
+		{
+			if (nums[i] == target)
+				return i;
+		}
+		return -1;
+	}
+	public static int[] SearchRange(int[] nums, int target)
+	{
+		List<int> numbers = new List<int>();
+		List<int> indexes = new List<int>();
+		for (int i = 0; i < nums.Length; ++i)
+		{
+			if (nums[i] == target)
+			{
+				numbers.Add(nums[i]);
+				indexes.Add(i);
+			}
+		}
+		if (numbers.Any() == false)
+		{
+			return new int[] { -1, -1 };
+		}
+		if (numbers.All(x => x == numbers[0]))
+		{
+			List<int> ints = new List<int>();
+			int start = indexes[Array.IndexOf(indexes.ToArray(), indexes[0])];
+			int end = indexes[Array.LastIndexOf(indexes.ToArray(), indexes[indexes.Count - 1])];
+			ints.Add(start);
+			ints.Add(end);
+			return ints.ToArray();
+		}
+		else
+		{
+			return new[] { indexes[0], indexes[0] };
+		}
 	}
 }
 internal class Program
@@ -480,10 +662,9 @@ internal class Program
 		//Console.WriteLine(Solution.MaxArea(ints));
 		//ListNode listNode1 = new ListNode(1, new ListNode(2, new ListNode(4)));
 		//ListNode listNode2 = new ListNode(1, new ListNode(3, new ListNode(4)));
-		ListNode listNode1 = new ListNode();
-		ListNode listNode2 = new ListNode();
-		Solution.MergeTwoLists(listNode1, listNode2);
+		ListNode listNode1 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
 
-
+		int[] ints = { 5, 7, 7, 8, 8, 10 };
+		 int [] t = Solution.SearchRange(ints, 8);
 	}
 }
