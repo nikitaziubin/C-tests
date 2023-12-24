@@ -652,7 +652,7 @@ public class Solution
 		}
 		for (int i = 0; i < ints.Count; ++i)
 		{
-			if (ints[i] < target && ints[i+1] > target )
+			if (ints[i] < target && ints[i + 1] > target)
 			{
 				ints.Insert(i + 1, target);
 			}
@@ -664,6 +664,52 @@ public class Solution
 			ints.Add(0);
 		}
 		return 0;
+	}
+	public static string CountAndSay(int n)
+	{
+		if (n == 1)
+		{
+			return "1";
+		}
+		n = n - 2;
+		List<int> currentInts = new List<int>();
+		List<int> nextInts = new List<int>();
+		currentInts.Add(1);
+		currentInts.Add(1);
+		int intsCount = 1;
+		for (int i = 0; i < n; ++i)
+		{
+			int count = 1;
+			for (int j = 0; j < currentInts.Count; j = j + count )
+			{
+				count = 1;
+				for (int k = j + 1; k < currentInts.Count; ++k)
+				{
+					if (currentInts[j] == currentInts[k])
+					{
+						count++;
+						intsCount++;
+					}
+					else
+					{
+						//intsCount = count;
+						break;
+					}
+				}
+				nextInts.Add(intsCount);
+				nextInts.Add(currentInts[j]);
+				intsCount = 1;
+				
+			}
+			currentInts.Clear();
+			currentInts.AddRange(nextInts);
+			nextInts.Clear();
+
+		}
+		//string a = string.Join("", currentInts);
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.AppendJoin("", currentInts);
+		return stringBuilder.ToString();
 	}
 
 }
@@ -697,6 +743,6 @@ internal class Program
 		ListNode listNode1 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
 
 		int[] ints = { -1, 3, 5, 6 };
-		int k = Solution.SearchInsert(ints, 0);
+		Console.WriteLine( Solution.CountAndSay(10));
 	}
 }
