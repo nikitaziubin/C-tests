@@ -634,6 +634,38 @@ public class Solution
 			return new[] { indexes[0], indexes[0] };
 		}
 	}
+	public static int SearchInsert(int[] nums, int target)
+	{
+		if (nums[0] > target)
+		{
+			return 0;
+		}
+		List<int> ints = new List<int>();
+		ints.AddRange(nums);
+		if (nums.Contains(target) == true)
+		{
+			return ints.FindIndex(x => x == target);
+		}
+		if (nums[nums.Length - 1] < target)
+		{
+			return nums.Length;
+		}
+		for (int i = 0; i < ints.Count; ++i)
+		{
+			if (ints[i] < target && ints[i+1] > target )
+			{
+				ints.Insert(i + 1, target);
+			}
+			if (ints.Contains(target) == true)
+			{
+				int index = ints.FindIndex(x => x == target);
+				return index;
+			}
+			ints.Add(0);
+		}
+		return 0;
+	}
+
 }
 internal class Program
 {
@@ -664,7 +696,7 @@ internal class Program
 		//ListNode listNode2 = new ListNode(1, new ListNode(3, new ListNode(4)));
 		ListNode listNode1 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
 
-		int[] ints = { 5, 7, 7, 8, 8, 10 };
-		 int [] t = Solution.SearchRange(ints, 8);
+		int[] ints = { -1, 3, 5, 6 };
+		int k = Solution.SearchInsert(ints, 0);
 	}
 }
